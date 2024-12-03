@@ -10,6 +10,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      xvfb:
+        image: mcr.microsoft.com/playwright:focal
+        options: --shm-size=1gb
+
     steps:
     - uses: actions/checkout@v2
     
@@ -19,17 +24,10 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
 
-    - name: Setup Xvfb
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y xvfb
-        Xvfb :99 &
-        export DISPLAY=:99
-
     - name: Compile
       run: javac -d . src/LoginApp.java test/LoginAppST.java
 
     - name: Run Tests
-      run: xvfb-run java LoginAppST
-      env:
-        DISPLAY: :99
+      uses: GabrielBB/xvfb-action@v1
+      with:
+        run: java LoginAppST
