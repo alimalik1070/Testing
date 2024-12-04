@@ -23,13 +23,14 @@ public class LoginAppST {
         LoginApp app = new LoginApp();
       
         String result = app.authenticateUser("johndoe@example.com");
+         assertNotNull(result, "Login should fail due to missing password check");
         System.out.println("Test Valid Email: " + (result == null ? "PASS" : "FAIL"));
     }
 
     private static void testInvalidEmail() {
         LoginApp app = new LoginApp();
         String result = app.authenticateUser("nonexistent@example.com");
-          assertNotNull(result, "Login should fail due to missing password check");
+         
         System.out.println("Test Invalid Email: " + (result == null ? "PASS" : "FAIL"));
     }
 
