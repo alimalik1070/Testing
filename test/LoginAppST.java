@@ -26,6 +26,7 @@ public class LoginAppST {
          if (result != null) {
         throw new AssertionError("Login should fail due to missing password check");
     }
+        
         System.out.println("Test Valid Email: " + (result == null ? "PASS" : "FAIL"));
     }
 
