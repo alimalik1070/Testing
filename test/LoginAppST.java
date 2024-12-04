@@ -21,7 +21,7 @@ public class LoginAppST {
 
     private static void testValidEmail() {
         LoginApp app = new LoginApp();
-        assertNotNull(result, "Login should fail due to missing password check");
+      
         String result = app.authenticateUser("johndoe@example.com");
         System.out.println("Test Valid Email: " + (result == null ? "PASS" : "FAIL"));
     }
@@ -29,6 +29,7 @@ public class LoginAppST {
     private static void testInvalidEmail() {
         LoginApp app = new LoginApp();
         String result = app.authenticateUser("nonexistent@example.com");
+          assertNotNull(result, "Login should fail due to missing password check");
         System.out.println("Test Invalid Email: " + (result == null ? "PASS" : "FAIL"));
     }
 
