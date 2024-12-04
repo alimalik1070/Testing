@@ -1,33 +1,29 @@
-name: Java CI
+name: CI/CD Pipeline
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches: [ "main", "master" ]
 
 jobs:
-  test:
+
+  build:
     runs-on: ubuntu-latest
-
-    services:
-      xvfb:
-        image: mcr.microsoft.com/playwright:focal
-        options: --shm-size=1gb
-
+    
     steps:
     - uses: actions/checkout@v2
-    
-    - name: Set up JDK 11
+    - name: Set up Java
       uses: actions/setup-java@v2
       with:
         java-version: '11'
         distribution: 'adopt'
-
-    - name: Compile
-      run: javac -d . src/LoginApp.java test/LoginAppST.java
-
-    - name: Run Tests
-      uses: GabrielBB/xvfb-action@v1
-      with:
-        run: java LoginAppST
+    - name: Compile code
+      run: |
+        mkdir -p target
+        javac -d target -cp "lib/*:." src/LoginApp.java test/LoginAppST.java
+    - name: Run tests
+      run: |
+        java -cp "target:lib/*" test.LoginAppST
+    - name: Merge to main/master
+      if: success()
+      run: |
+        git push origin HEAD:main
