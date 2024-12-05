@@ -56,27 +56,29 @@ public class LoginApp extends JFrame {
         }
     }
 
-    public String authenticateUser(String email) {
-        System.out.println("Testing login process...");
+   public String authenticateUser(String email) {
         String userName = null;
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softwaretesting", "root", "12345678")) {
             String query = "SELECT name FROM User WHERE Email = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
-
             if (rs.next()) {
                 userName = rs.getString("Name");
             }
+
             rs.close();
             stmt.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return userName;
     }
 
     public static void main(String[] args) {
+        System.out.println("This is a test change in the main() method.");
         SwingUtilities.invokeLater(() -> {
             LoginApp loginApp = new LoginApp();
             loginApp.setVisible(true);
